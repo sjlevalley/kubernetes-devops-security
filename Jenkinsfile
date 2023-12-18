@@ -20,7 +20,7 @@ pipeline {
         }    
       stage('Docker Build & Test') {
             steps {
-              withDockerRegistry([credentialsId: 'docker-hub', url: '']) {
+              withDockerRegistry([credentialsId: "docker-hub", url: '']) {
                 sh "printenv"
                 sh "docker build -t sjlevalley/devsecops-numeric-application:$GIT_COMMIT ."
                 sh "docker push sjlevalley/devsecops-numeric-application:$GIT_COMMIT"
