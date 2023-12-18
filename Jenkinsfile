@@ -19,5 +19,11 @@ pipeline {
               }
             }
         }    
+      stage('Docker Build & Test') {
+            steps {
+              sh "mvn test"
+            }
+           
+        }    
     }
 }
