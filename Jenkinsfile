@@ -1,6 +1,6 @@
 pipeline {
   agent any
-  
+
   stages {
       stage('Build Artifact') {
             steps {
@@ -22,9 +22,16 @@ pipeline {
       stage('Docker Build & Test') {
             steps {
               withDockerRegistry([credentialsId: "docker-hub", url: '']) {
-                sh "printenv"
                 sh "docker build -t sjlevalley/devsecops-numeric-application:$GIT_COMMIT ."
                 sh "docker push sjlevalley/devsecops-numeric-application:$GIT_COMMIT"
+              }
+            }
+        }    
+      stage('Kubernetes Deployment - DEV') {
+            steps {
+              withKubeConfig([credentialsId: "kubeconfig"]) {
+                sh "sed -i 's#replace#sjlevalley/devsecops-numeric-application:${GIT_COMMIT}#g' k8s_deployment_service.yaml"
+                sh "kubectl apply -f k8s_deployment_service.yaml"
               }
             }
         }    
