@@ -19,6 +19,31 @@ pipeline {
               }
             }
         }    
+      // Need to add SonarQube Checks 
+      // stage('SonarQube - SAST') {
+      //   steps {
+      //     withSonarQubeEnv("SonarQube") {
+      //       sh "mvn sonar:sonar -Dsonar.projectKey=numeric-application -Dsonar.host.url=http://devsecops-demo-eastus.cloudapp.azure.com:9000"
+      //     }
+      //     timeout(time: 2, unit: 'MINUTES') {
+      //       script {
+      //         waitForQualityGate abortPipeline: true
+      //       }
+      //     }
+      //   }
+      // }  
+      // stage('Vulnerability Scan - Docker') {
+      //  // NEED OWASP Dependency-Check Plugin installed
+      //   steps {
+      //     sh "mvn dependency-check:check"
+      //    }
+      //    post {
+      //     always {
+      //       dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+      //     }
+      //    }
+
+      // }
       stage('Docker Build & Test') {
             steps {
               withDockerRegistry([credentialsId: "docker-hub", url: '']) {
@@ -34,6 +59,6 @@ pipeline {
                 sh "kubectl apply -f k8s_deployment_service.yaml"
               }
             }
-        }    
+        } 
     }
 }
