@@ -21,8 +21,10 @@ pipeline {
         }    
       stage('Docker Build & Test') {
             steps {
-              withDockerRegistry([credentialsId: "74c4b410-bc5e-4127-85fe-533751261a71", url: ""])
+              withDockerRegistry([credentialsId: "74c4b410-bc5e-4127-85fe-533751261a71", url: ""]) {
                 sh "printenv"
+
+              }
             }
            
         }    
