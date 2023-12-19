@@ -33,12 +33,6 @@ pipeline {
       //     }
       //   }
       // }  
-      // stage('Vulnerability Scan - Docker') {
-      //  // NEED OWASP Dependency-Check Plugin installed
-      //   steps {
-      //     sh "mvn dependency-check:check"
-      //    }
-      // }
       stage('Vulnerability Scan - Docker') {
         steps {
           parallel (
@@ -70,7 +64,7 @@ pipeline {
                 }
               )
             }
-    }
+    
       stage('K8S Deployment - DEV') { 
             steps {
               parallel(
@@ -86,6 +80,7 @@ pipeline {
                 }
               )
             }
+    }
     }
     post {
       always {
