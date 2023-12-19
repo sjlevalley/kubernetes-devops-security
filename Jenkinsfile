@@ -47,9 +47,9 @@ pipeline {
                "Trivy Scan": {
                  sh "bash trivy-docker-image-scan.sh"
              },
-             		"OPA Conftest":{
-				          sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-docker-security.rego Dockerfile'
-			       }   
+                     "OPA Conftest":{
+                          sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-docker-security.rego Dockerfile'
+                   }   
           )
          }
       }
@@ -61,30 +61,30 @@ pipeline {
               }
             }
         }    
-            stage('Vulnerability Scan - Kubernetes') {
-      steps {
-        parallel(
-          "OPA Scan": {
-            sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
-          }
-        )
-      }
+      stage('Vulnerability Scan - Kubernetes') {
+            steps {
+              parallel(
+                "OPA Scan": {
+                  sh 'docker run --rm -v $(pwd):/project openpolicyagent/conftest test --policy opa-k8s-security.rego k8s_deployment_service.yaml'
+                }
+              )
+            }
     }
-     //    stage('K8S Deployment - DEV') {
- //      steps {
- //        parallel(
- //          "Deployment": {
- //            withKubeConfig([credentialsId: 'kubeconfig']) {
- //              sh "bash k8s-deployment.sh"
- //            }
- //          },
- //          "Rollout Status": {
- //            withKubeConfig([credentialsId: 'kubeconfig']) {
- //              sh "bash k8s-deployment-rollout-status.sh"
- //            }
- //          }
- //        )
- //      }
+      stage('K8S Deployment - DEV') { 
+            steps {
+              parallel(
+                "Deployment": {
+                  withKubeConfig([credentialsId: 'kubeconfig']) {
+                    sh "bash k8s-deployment.sh"
+                  }
+                },
+                "Rollout Status": {
+                  withKubeConfig([credentialsId: 'kubeconfig']) {
+                    sh "bash k8s-deployment-rollout-status.sh"
+                  }
+                }
+              )
+            }
     }
     post {
       always {
