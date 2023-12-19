@@ -1,13 +1,13 @@
 pipeline {
   agent any
-  // environment {
-  //     deploymentName = "devsecops"
-  //     containerName = "devsecops-container"
-  //     serviceName = "devsecops-svc"
-  //     imageName = "sjlevalley/devsecops-numeric-application:${GIT_COMMIT}"
-  //     applicationURL="devsecops-demo-1.eastus.cloudapp.azure.com"
-  //     applicationURI="/increment/99"
-  //   }
+  environment {
+      deploymentName = "devsecops"
+      containerName = "devsecops-container"
+      serviceName = "devsecops-svc"
+      imageName = "sjlevalley/devsecops-numeric-application:${GIT_COMMIT}"
+      applicationURL="devsecops-demo-1.eastus.cloudapp.azure.com"
+      applicationURI="/increment/99"
+    }
   stages {
       stage('Build Artifact') {
             steps {
