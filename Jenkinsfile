@@ -32,18 +32,25 @@ pipeline {
       //     }
       //   }
       // }  
+      // stage('Vulnerability Scan - Docker') {
+      //  // NEED OWASP Dependency-Check Plugin installed
+      //   steps {
+      //     sh "mvn dependency-check:check"
+      //    }
+      // }
       stage('Vulnerability Scan - Docker') {
-       // NEED OWASP Dependency-Check Plugin installed
         steps {
-          sh "mvn dependency-check:check"
+          parallel {
+            "Dependency Scan": {
+              sh "mvn dependency-check:check"
+            },
+            "Trivy Scan": {
+              sh "bash trivy-docker-image-scan.sh"
+            }
+          }
          }
-        //  post {
-        //   always {
-        //     dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
-        //   }
-        //  }
       }
-      stage('Docker Build & Test') {
+      stage('Docker Build & Push') {
             steps {
               withDockerRegistry([credentialsId: "docker-hub", url: '']) {
                 sh "docker build -t sjlevalley/devsecops-numeric-application:$GIT_COMMIT ."
