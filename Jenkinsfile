@@ -19,12 +19,6 @@ pipeline {
             steps {
               sh "mvn test"
             }
-            // post {
-            //   always {
-            //     junit 'target/surefire-reports/*.xml'
-            //     jacoco execPattern: 'target/jacoco.exec'
-            //   }
-            // }
         }    
       // Need to add SonarQube Checks 
       // stage('SonarQube - SAST') {
