@@ -32,18 +32,17 @@ pipeline {
       //     }
       //   }
       // }  
-      // stage('Vulnerability Scan - Docker') {
-      //  // NEED OWASP Dependency-Check Plugin installed
-      //   steps {
-      //     sh "mvn dependency-check:check"
-      //    }
-      //    post {
-      //     always {
-      //       dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
-      //     }
-      //    }
-
-      // }
+      stage('Vulnerability Scan - Docker') {
+       // NEED OWASP Dependency-Check Plugin installed
+        steps {
+          sh "mvn dependency-check:check"
+         }
+         post {
+          always {
+            dependencyCheckPublisher pattern: 'target/dependency-check-report.xml'
+          }
+         }
+      }
       stage('Docker Build & Test') {
             steps {
               withDockerRegistry([credentialsId: "docker-hub", url: '']) {
