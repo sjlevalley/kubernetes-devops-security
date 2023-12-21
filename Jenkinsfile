@@ -117,6 +117,7 @@ pipeline {
         sh 'exit 0'
       }
   }
+  }
   post {
     always {
       // junit 'target/surefire-reports/*.xml'
